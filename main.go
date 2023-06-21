@@ -14,7 +14,7 @@ func main() {
 		panic(err)
 	}
 
-	file, err := os.Open(config.filename)
+	file, err := os.Open(config.Filename)
 	defer file.Close()
 
 	if err != nil {
@@ -33,9 +33,9 @@ func main() {
 }
 
 type Config struct {
-	filename    string
-	word        string
-	ignore_case bool
+	Filename   string
+	Word       string
+	IgnoreCase bool
 }
 
 func ParseConfig(args []string) (Config, error) {
@@ -53,9 +53,9 @@ func ParseConfig(args []string) (Config, error) {
 	}
 
 	return Config{
-		filename:    filename,
-		word:        word,
-		ignore_case: ignore_case,
+		Filename:   filename,
+		Word:       word,
+		IgnoreCase: ignore_case,
 	}, nil
 }
 
@@ -64,13 +64,13 @@ func CompareLines(config Config, file *os.File) ([]string, error) {
 	var lines []string
 
 	for i := 1; scanner.Scan(); i++ {
-		if !config.ignore_case {
-			if strings.Contains(scanner.Text(), config.word) {
-				lines = append(lines, fmt.Sprintf("%v: %v", i, scanner.Text()))
+		if !config.IgnoreCase {
+			if strings.Contains(scanner.Text(), config.Word) {
+				lines = append(lines, fmt.Sprintf("%d: %s", i, scanner.Text()))
 			}
 		} else {
-			if strings.Contains(strings.ToLower(scanner.Text()), strings.ToLower(config.word)) {
-				lines = append(lines, fmt.Sprintf("%v: %v", i, scanner.Text()))
+			if strings.Contains(strings.ToLower(scanner.Text()), strings.ToLower(config.Word)) {
+				lines = append(lines, fmt.Sprintf("%d: %s", i, scanner.Text()))
 			}
 		}
 	}
